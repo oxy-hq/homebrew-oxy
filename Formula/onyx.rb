@@ -24,6 +24,19 @@ class Onyx < Formula
   end
 
   def install
+    if OS.mac?
+      if Hardware::CPU.intel?
+        mv "onyx-x86_64-apple-darwin", "onyx"
+      elsif Hardware::CPU.arm?
+        mv "onyx-aarch64-apple-darwin", "onyx"
+      end
+    elsif OS.linux?
+      if Hardware::CPU.intel?
+        mv "onyx-x86_64-unknown-linux-gnu", "onyx"
+      elsif Hardware::CPU.arm?
+        mv "onyx-aarch64-unknown-linux-gnu", "onyx"
+      end
+    end
     bin.install "onyx"
   end
 
