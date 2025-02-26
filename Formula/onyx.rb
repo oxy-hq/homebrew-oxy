@@ -1,24 +1,26 @@
 class Onyx < Formula
+  @@version = "0.1.39"
+
   desc "Onyx CLI tool"
   homepage "https://github.com/onyx-hq/onyx"
-  version "0.1.36"
+  version @@version
 
   on_macos do
     if Hardware::CPU.intel?
-      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/0.1.36/onyx-x86_64-apple-darwin"
-      sha256 "8521e5a5cf07d7768d18d62464d1987a0fd0d3c55b886997e3a783ca61efc6ce"
+      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/#{@@version}/onyx-x86_64-apple-darwin"
+      sha256 "75e17be128abb3ac1b8c934b8b34bc7a292c2989fee0f0e1fae7f98777d58ae7"
     elsif Hardware::CPU.arm?
-      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/0.1.36/onyx-aarch64-apple-darwin"
-      sha256 "d392235b1b4b48c6a19922207e312f1d0a3e5a0fff7d5d282ae082e06370dee8"
+      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/#{@@version}/onyx-aarch64-apple-darwin"
+      sha256 "474751d5e9ff994f922fac3dd949e48a10051abe392610b7e3e1eeaffadf6cfe"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
-      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/0.1.36/onyx-x86_64-unknown-linux-gnu"
-      sha256 "TBD"
+      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/#{@@version}/onyx-x86_64-unknown-linux-gnu"
+      sha256 "c5ff89dc03d07fbf708473f73c2484f9c3eaf1a75d56b3a96d5e84838e9902fb"
     elsif Hardware::CPU.arm?
-      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/0.1.36/onyx-aarch64-unknown-linux-gnu"
+      url "https://github.com/onyx-hq/onyx-public-releases/releases/download/#{@@version}/onyx-aarch64-unknown-linux-gnu"
       sha256 "TBD"
     end
   end
