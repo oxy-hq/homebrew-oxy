@@ -1,5 +1,5 @@
 class Onyx < Formula
-  @@version = "0.1.0"
+  @@version = "0.1.1"
 
   desc "Onyx CLI tool"
   homepage "https://github.com/onyx-hq/onyx"
@@ -8,17 +8,17 @@ class Onyx < Formula
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/onyx-hq/onyx/releases/download/#{@@version}/onyx-x86_64-apple-darwin"
-      sha256 "8b5eb0121d9a7bfd3c1d7fae44dccad6e18de282f52f7bda7735c4872486f8fb"
+      sha256 "93b08c93797ed00b3407323a398fa3d077d3ba3c2df23e7df1ba9def6535aff8"
     elsif Hardware::CPU.arm?
       url "https://github.com/onyx-hq/onyx/releases/download/#{@@version}/onyx-aarch64-apple-darwin"
-      sha256 "108edbf361b78ea0c578824e1083b1fca4807e890ee33dc603de4c891fd7aab5"
+      sha256 "e847fa8d1cb0435afcc17cf3ac32e88908258b20a059a67b67388fcde2914f0d"
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/onyx-hq/onyx/releases/download/#{@@version}/onyx-x86_64-unknown-linux-gnu"
-      sha256 "adcd065304fd715c69cc90585c5ea04cacbf1995d3c92af5964027ee38ddc1aa"
+      sha256 "ddb17359dcaec0f8164f2a872906d97281153f06ca8cf6246a24a8a06023cea7"
     elsif Hardware::CPU.arm?
       url "https://github.com/onyx-hq/onyx/releases/download/#{@@version}/onyx-aarch64-unknown-linux-gnu"
       sha256 "TBD"
