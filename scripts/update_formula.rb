@@ -22,74 +22,61 @@ require 'json'
 
 def fetch_latest_release
   url = URI("https://api.github.com/repos/oxy-hq/oxy/releases/latest")
-  response = Net::HTTP.get(url)
-  JSON.parse(response)
+  request = Net::HTTP::Get.new(url)
+  github_token = ENV['GITHUB_TOKEN']
+  request['Authorization'] = "token #{github_token}" if github_token
+
+  response = Net::HTTP.start(url.hostname, url.port, use_ssl: true) { |http| http.request(request) }
+  raise "Failed to fetch release: #{response.code} #{response.message}" unless response.is_a?(Net::HTTPSuccess)
+
+  JSON.parse(response.body)
+end
+
+def download_file(url, destination)
+  uri = URI(url)
+  response = Net::HTTP.get_response(uri)
+  response = Net::HTTP.get_response(URI(response['location'])) if response.is_a?(Net::HTTPRedirection)
+  raise "Failed to download file: #{response.code} #{response.message}" unless response.is_a?(Net::HTTPSuccess)
+
+  File.write(destination, response.body)
 end
 
 def read_sha_sums(file_path)
-  sha_sums = {}
-  File.readlines(file_path).each do |line|
+  File.readlines(file_path).each_with_object({}) do |line, sha_sums|
     sha, name = line.strip.split(' *')
     sha_sums[name] = sha
   end
-  sha_sums
 end
 
-def download_sha_sums_file(url, destination)
-  File.open(destination, 'wb') do |file|
-    file.write(Net::HTTP.get(URI(url)))
-  end
-end
-
-def update_formula(version, sha256_darwin_intel, sha256_darwin_arm, sha256_linux_intel, sha256_linux_arm)
+def update_formula(version, sha256_values)
   formula_path = File.join(__dir__, '../Formula/oxy.rb')
   content = File.read(formula_path)
 
-  current_version = content.match(/@@version = "(\d+\.\d+\.\d+)"/)[1]
-
-  if Gem::Version.new(version) > Gem::Version.new(current_version)
-    content.gsub!(/@@version = "\d+\.\d+\.\d+"/, "@@version = \"#{version}\"")
-    content.gsub!(/sha256 "[a-f0-9]{64}"/, "sha256 \"#{sha256_darwin_intel}\"", 1)
-    content.gsub!(/sha256 "[a-f0-9]{64}"/, "sha256 \"#{sha256_darwin_arm}\"", 1)
-    content.gsub!(/sha256 "[a-f0-9]{64}"/, "sha256 \"#{sha256_linux_intel}\"", 1)
-    content.gsub!(/sha256 "TBD"/, "sha256 \"#{sha256_linux_arm}\"")
-
-    File.write(formula_path, content)
+  content.gsub!(/@@version = "\d+\.\d+\.\d+"/, "@@version = \"#{version}\"")
+  sha256_values.each do |key, value|
+    content.gsub!(/#{key}: "[a-f0-9]{64}"/, "#{key}: \"#{value}\"")
   end
+
+  File.write(formula_path, content)
 end
 
-def fetch_asset_url(release, asset_name)
-  asset = release['assets'].find { |a| a['name'] == asset_name }
-  asset ? asset['browser_download_url'] : nil
-end
-
-def download_and_read_sha_sums(release, file_name)
-  sha_sums_file_path = File.join(__dir__, file_name)
-  url = fetch_asset_url(release, file_name)
-  raise "Asset #{file_name} not found in release" unless url
-
-  download_sha_sums_file(url, sha_sums_file_path)
-  read_sha_sums(sha_sums_file_path)
-end
-
-def fetch_sha_values(sha_sums, keys)
-  keys.map { |key| sha_sums.fetch(key, 'TBD') }
-end
-
-def update_formula_with_release(release, sha_keys)
+def process_release(release)
   version = release['tag_name']
-  sha_sums = download_and_read_sha_sums(release, 'SHA256SUMS.txt')
-  sha_values = fetch_sha_values(sha_sums, sha_keys)
+  sha_sums_url = release['assets'].find { |asset| asset['name'] == 'SHA256SUMS.txt' }['browser_download_url']
+  sha_sums_file = File.join(__dir__, 'SHA256SUMS.txt')
 
-  update_formula(version, *sha_values)
+  download_file(sha_sums_url, sha_sums_file)
+  sha_sums = read_sha_sums(sha_sums_file)
+
+  sha256_values = {
+    darwin_intel: sha_sums.fetch('oxy-x86_64-apple-darwin', 'TBD'),
+    darwin_arm: sha_sums.fetch('oxy-aarch64-apple-darwin', 'TBD'),
+    linux_intel: sha_sums.fetch('oxy-x86_64-unknown-linux-gnu', 'TBD'),
+    linux_arm: sha_sums.fetch('oxy-aarch64-unknown-linux-gnu', 'TBD')
+  }
+
+  update_formula(version, sha256_values)
 end
 
 release = fetch_latest_release
-sha_keys = [
-  'oxy-x86_64-apple-darwin',
-  'oxy-aarch64-apple-darwin',
-  'oxy-x86_64-unknown-linux-gnu',
-  'oxy-aarch64-unknown-linux-gnu'
-]
-
-update_formula_with_release(release, sha_keys)
+process_release(release)
