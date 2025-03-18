@@ -5,23 +5,30 @@ class Oxy < Formula
   homepage "https://github.com/oxy-hq/oxy"
   version @@version
 
+  SHA256_VALUES = {
+    darwin_intel: "2abc66031ec79a305313d9b98e8d55bad4fc185437d67c85a7c13550eead1b06",
+    darwin_arm: "e72b6c602ea8df349335d853d5856e81f24d12e443fbd50ac7b72c5ea4f45840",
+    linux_intel: "280d130c50def9d10f76509bd7f3fb20b122b2b3fac0d412c25de57224807ba4",
+    linux_arm: "TBD"
+  }
+
   on_macos do
     if Hardware::CPU.intel?
       url "https://github.com/oxy-hq/oxy/releases/download/#{@@version}/oxy-x86_64-apple-darwin"
-      sha256 "2abc66031ec79a305313d9b98e8d55bad4fc185437d67c85a7c13550eead1b06"
+      sha256 SHA256_VALUES[:darwin_intel]
     elsif Hardware::CPU.arm?
       url "https://github.com/oxy-hq/oxy/releases/download/#{@@version}/oxy-aarch64-apple-darwin"
-      sha256 "e72b6c602ea8df349335d853d5856e81f24d12e443fbd50ac7b72c5ea4f45840"
+      sha256 SHA256_VALUES[:darwin_arm]
     end
   end
 
   on_linux do
     if Hardware::CPU.intel?
       url "https://github.com/oxy-hq/oxy/releases/download/#{@@version}/oxy-x86_64-unknown-linux-gnu"
-      sha256 "280d130c50def9d10f76509bd7f3fb20b122b2b3fac0d412c25de57224807ba4"
+      sha256 SHA256_VALUES[:linux_intel]
     elsif Hardware::CPU.arm?
       url "https://github.com/oxy-hq/oxy/releases/download/#{@@version}/oxy-aarch64-unknown-linux-gnu"
-      sha256 "TBD"
+      sha256 SHA256_VALUES[:linux_arm]
     end
   end
 
