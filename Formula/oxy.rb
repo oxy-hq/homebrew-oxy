@@ -1,4 +1,4 @@
-class oxy < Formula
+class Oxy < Formula
   @@version = "0.1.2"
 
   desc "oxy CLI tool"
