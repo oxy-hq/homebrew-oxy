@@ -1,37 +1,37 @@
-# Homebrew Onyx
+# Homebrew oxy
 
-This repository contains the Homebrew formula for the Onyx CLI tool.
+This repository contains the Homebrew formula for the oxy CLI tool.
 
 ## Installation
 
-To install the Onyx CLI tool using Homebrew, run the following command:
+To install the oxy CLI tool using Homebrew, run the following command:
 
 ```sh
-brew install onyx-hq/onyx/onyx
+brew install oxy-hq/oxy/oxy
 ```
 
 ## Usage
 
-After installation, you can verify the installation and check the version of Onyx by running:
+After installation, you can verify the installation and check the version of oxy by running:
 
 ```sh
-onyx --version
+oxy --version
 ```
 
 ## Updating
 
-To update the Onyx CLI tool to the latest version, run:
+To update the oxy CLI tool to the latest version, run:
 
 ```sh
-brew upgrade onyx-hq/onyx/onyx
+brew upgrade oxy-hq/oxy/oxy
 ```
 
 ## Uninstallation
 
-To uninstall the Onyx CLI tool, run:
+To uninstall the oxy CLI tool, run:
 
 ```sh
-brew uninstall onyx
+brew uninstall oxy
 ```
 
 ## Contributing
