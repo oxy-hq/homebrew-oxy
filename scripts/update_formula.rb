@@ -35,6 +35,12 @@ def read_sha_sums(file_path)
   sha_sums
 end
 
+def download_sha_sums_file(url, destination)
+  File.open(destination, 'wb') do |file|
+    file.write(Net::HTTP.get(URI(url)))
+  end
+end
+
 def update_formula(version, sha256_darwin_intel, sha256_darwin_arm, sha256_linux_intel, sha256_linux_arm)
   formula_path = File.join(__dir__, '../Formula/oxy.rb')
   content = File.read(formula_path)
@@ -52,13 +58,38 @@ def update_formula(version, sha256_darwin_intel, sha256_darwin_arm, sha256_linux
   end
 end
 
+def fetch_asset_url(release, asset_name)
+  asset = release['assets'].find { |a| a['name'] == asset_name }
+  asset ? asset['browser_download_url'] : nil
+end
+
+def download_and_read_sha_sums(release, file_name)
+  sha_sums_file_path = File.join(__dir__, file_name)
+  url = fetch_asset_url(release, file_name)
+  raise "Asset #{file_name} not found in release" unless url
+
+  download_sha_sums_file(url, sha_sums_file_path)
+  read_sha_sums(sha_sums_file_path)
+end
+
+def fetch_sha_values(sha_sums, keys)
+  keys.map { |key| sha_sums.fetch(key, 'TBD') }
+end
+
+def update_formula_with_release(release, sha_keys)
+  version = release['tag_name']
+  sha_sums = download_and_read_sha_sums(release, 'SHA256SUMS.txt')
+  sha_values = fetch_sha_values(sha_sums, sha_keys)
+
+  update_formula(version, *sha_values)
+end
+
 release = fetch_latest_release
-version = release['tag_name']
-sha_sums = read_sha_sums(File.join(__dir__, 'SHA_sums'))
+sha_keys = [
+  'oxy-x86_64-apple-darwin',
+  'oxy-aarch64-apple-darwin',
+  'oxy-x86_64-unknown-linux-gnu',
+  'oxy-aarch64-unknown-linux-gnu'
+]
 
-sha256_darwin_intel = sha_sums['oxy-x86_64-apple-darwin']
-sha256_darwin_arm = sha_sums['oxy-aarch64-apple-darwin']
-sha256_linux_intel = sha_sums['oxy-x86_64-unknown-linux-gnu']
-sha256_linux_arm = sha_sums['oxy-aarch64-unknown-linux-gnu']
-
-update_formula(version, sha256_darwin_intel, sha256_darwin_arm, sha256_linux_intel, sha256_linux_arm)
+update_formula_with_release(release, sha_keys)
