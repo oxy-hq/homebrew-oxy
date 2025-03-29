@@ -1,14 +1,14 @@
 class Oxy < Formula
-  @@version = "0.1.3"
+  @@version = "0.1.6"
 
   desc "oxy CLI tool"
   homepage "https://github.com/oxy-hq/oxy"
   version @@version
 
   SHA256_VALUES = {
-    darwin_intel: "3eb6fee6e57d42178b7ef9e227abf05ce566e92d7f7db3ec1113d3f5681ec6d7",
-    darwin_arm: "01c4dbe5f851ed2744acea71262f03a6ddcb513ea622e90cc94e7541743eea87",
-    linux_intel: "2d79348e6b3d3253041b43e5a1c0068387e1406c7e6cbc3393456eb0e848d91b",
+    darwin_intel: "bda8cf607ab5bbdff7b974c403cb00d87d517a05456c1816f6b5559faf85ecb9",
+    darwin_arm: "de953727942ca77746e26078a9e6262149c2c074ab7ad995a5029c241f92100c",
+    linux_intel: "7d2f97ba4e6b252d6d2e7a6b960c4e5ddad2bebdd4e816757cad67d550cfc303",
     linux_arm: "TBD"
   }
 
