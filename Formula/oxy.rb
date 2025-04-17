@@ -9,7 +9,7 @@ class Oxy < Formula
     darwin_intel: "234d39514c8485f252cea1a9d9c932d3a2d1fd2e8e45b2344f218abc41ab0533",
     darwin_arm: "6915955dc6dc9eafed153748504d0f3d5a44cf704eacafce44468413a11d6ea6",
     linux_intel: "66d0ffe8468c4cd22064b7dcebb308d370435daca9c991e1e23fdc58cc5d0f1e",
-    linux_arm: "TBD"
+    linux_arm: "be1773344bb73b7420f5a81f18135b16e71af9caa524c714045d57ee290fe7a0"
   }
 
   on_macos do
