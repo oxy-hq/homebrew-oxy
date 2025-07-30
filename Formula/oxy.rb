@@ -1,15 +1,15 @@
 class Oxy < Formula
-  @@version = "0.2.21"
+  @@version = "0.2.22"
 
   desc "oxy CLI tool"
   homepage "https://github.com/oxy-hq/oxy"
   version @@version
 
   SHA256_VALUES = {
-    darwin_intel: "1382377e6bf84462a5db69c35a48755da3f124987b1f0bd847d3c7604a9eea05",
-    darwin_arm: "bd1baa3ee56cb3136feaa67ccf38d3a8cac7411d7be8d663aa7e2285fb93d779",
-    linux_intel: "e019138de06600a85eb7a2a1428c08e483eb930b001c002d7e95fab478674e28",
-    linux_arm: "dff4126689021bdb970dce1d98eeba34a88b1c5a4c12580fa8c8d1fd849d7047"
+    darwin_intel: "5fd2ef02eacd29b3610ae813601fe0f1cc4f16ff43ce9d68517499b51c8b4050",
+    darwin_arm: "bd21ee229dfd0425fb79dc721c86bbf7a13273bb77b658f63cc7bf4042a5c2ea",
+    linux_intel: "91a932a7b83051ae083553acc404e52c5df4e3f42c9a4527111230bb053b9e5a",
+    linux_arm: "1d73863744a0e50b86ee11cb4942a6d7a55563e1d06678516255f93c9e4a8828"
   }
 
   on_macos do
