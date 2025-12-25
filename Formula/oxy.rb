@@ -1,5 +1,5 @@
 class Oxy < Formula
-  @@version = "0.4.0"
+  @@version = "0.4.1"
 
   desc "oxy CLI tool"
   homepage "https://github.com/oxy-hq/oxy"
@@ -7,9 +7,9 @@ class Oxy < Formula
 
   SHA256_VALUES = {
     darwin_intel: "TBD",
-    darwin_arm: "eebc0c984f4aa15674b6129b6ac87f1651b7cd7bfa595a1d376d2e87d181c581",
-    linux_intel: "22deb5b419c2f4438bd2f7a263a7abfa40691d5263eb9a4de9d8774773e97b79",
-    linux_arm: "87ba5b7b5209a594be328862a447e71a0a7e74b9e9d3a49e90e42657db8cf62f"
+    darwin_arm: "536b666002dcd45adca1a4b90079e2fa9b110a1146cdae067a5112c6af2c6862",
+    linux_intel: "53ae34fd4b3ee75b0d99d7749e23fcc6241c30de7f7785097d5b2733e7b67b38",
+    linux_arm: "15d09b58125abf0877743fe456f702ed7bed2ec3c19a293da419f0167acd4c1c"
   }
 
   on_macos do
